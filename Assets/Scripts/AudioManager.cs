@@ -5,54 +5,37 @@ using UnityEngine.UI;
 
 public class Sonidos : MonoBehaviour
 {
-    public AudioSource effectSource;
-    public AudioSource musicSource;
-    public AudioClip introMusic;
-    public AudioClip menuMusic;
-    public AudioClip effectClick;
+    public AudioSource audioSource;
+    public AudioClip clip;
+    public Slider slider;
 
-    public Slider sliderMusic;
-    public Slider sliderSFX;
 
-    public static Sonidos instance;
-
-    void Awake()
+    void Start()
     {
-        instance = this;
-        InitializeVolume();
+        // Verificar si el AudioSource está asignado, si no, obtenerlo
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        // Verificar nuevamente y lanzar una advertencia si no está presente
+        if (audioSource == null)
+        {
+            Debug.LogError("No AudioSource component found on the GameObject. Please add an AudioSource component.");
+            return;
+        }
+
+        // Asignar el clip de audio y reproducirlo
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
-    private void InitializeVolume()
+    void Update()
     {
-        effectSource.volume = PlayerPrefs.GetFloat("sfxvolumen", 1.0f);
-        musicSource.volume = PlayerPrefs.GetFloat("musicvolumen", 1.0f);
-
-        sliderMusic.value = musicSource.volume;
-        sliderSFX.value = effectSource.volume;
-    }
-
-    public void PlayEffect()
-    {
-        effectSource.PlayOneShot(effectClick);
-    }
-
-    public void PlaySong(AudioClip audioClip)
-    {
-        musicSource.clip = audioClip;
-        musicSource.Play();
-    }
-
-    public void OnMusicVolumeUpdate()
-    {
-        musicSource.volume = sliderMusic.value;
-        PlayerPrefs.SetFloat("musicvolumen", musicSource.volume);
-        PlayerPrefs.Save();
-    }
-
-    public void OnSFXVolumeUpdate()
-    {
-        effectSource.volume = sliderSFX.value;
-        PlayerPrefs.SetFloat("sfxvolumen", effectSource.volume);
-        PlayerPrefs.Save();
+        // Verificar si el AudioSource está asignado antes de usarlo
+        if (audioSource != null)
+        {
+            audioSource.volume = slider.value;
+        }
     }
 }

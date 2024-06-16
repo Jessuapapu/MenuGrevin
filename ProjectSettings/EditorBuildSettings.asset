@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuExtras.unity
     guid: 4ad0b78756966a141a94a278027f1201
+  - enabled: 1
+    path: Assets/Scenes/SanJacinto.unity
+    guid: 8ff46a7bf85b477469368b3ac100ecef
   m_configObjects: {}
